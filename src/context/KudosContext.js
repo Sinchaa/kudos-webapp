@@ -1,17 +1,11 @@
 import React, { createContext, useState, useContext } from 'react';
 import * as api from '../services/api';
 
-const KudosContext = createContext();
+// Create the context
+const KudosContext = createContext(null);
 
-export const useKudos = () => {
-  const context = useContext(KudosContext);
-  if (!context) {
-    throw new Error('useKudos must be used within a KudosProvider');
-  }
-  return context;
-};
-
-export const KudosProvider = ({ children }) => {
+// Create the provider component
+const KudosProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [users, setUsers] = useState([]);
   const [receivedKudos, setReceivedKudos] = useState([]);
@@ -149,3 +143,15 @@ export const KudosProvider = ({ children }) => {
 
   return <KudosContext.Provider value={value}>{children}</KudosContext.Provider>;
 };
+
+// Hook for using the kudos context
+const useKudos = () => {
+  const context = useContext(KudosContext);
+  if (!context) {
+    throw new Error('useKudos must be used within a KudosProvider');
+  }
+  return context;
+};
+
+// Export the provider and hook
+export { KudosProvider, useKudos };

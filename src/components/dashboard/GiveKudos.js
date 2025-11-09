@@ -29,36 +29,41 @@ export const GiveKudos = () => {
   }
 
   return (
-    <div className="users-list">
-      {users.map((user) => (
-        <div key={user.id} className="user-card">
-          <Avatar
-            firstName={user.first_name}
-            lastName={user.last_name}
-            username={user.username}
-          />
-          <div className="user-details">
-            <h3 className="user-name">
-              {user.first_name} {user.last_name}
-            </h3>
-            <p className="user-username">@{user.username}</p>
-            <p className="user-email">{user.username}@company.com</p>
-          </div>
-          <button
-            className="btn-give-kudo"
-            onClick={() => setSelectedUser(user)}
-            disabled={availableKudos === 0}
-          >
-            +
-          </button>
-          {selectedUser?.id === user.id && (
-            <KudoForm
-              user={user}
-              onClose={() => setSelectedUser(null)}
+    <div className="give-kudos-container">
+      <div className="kudos-status">
+        <p>Available Kudos: {availableKudos !== null ? availableKudos : 'Loading...'}</p>
+      </div>
+      <div className="users-list">
+        {users.map((user) => (
+          <div key={user.id} className="user-card">
+            <Avatar
+              firstName={user.first_name}
+              lastName={user.last_name}
+              username={user.username}
             />
-          )}
-        </div>
-      ))}
+            <div className="user-details">
+              <h3 className="user-name">
+                {user.first_name} {user.last_name}
+              </h3>
+              <p className="user-username">@{user.username}</p>
+              <p className="user-email">{user.username}@company.com</p>
+            </div>
+            <button
+              className="btn-give-kudo"
+              onClick={() => setSelectedUser(user)}
+              disabled={availableKudos === 0}
+            >
+              +
+            </button>
+            {selectedUser?.id === user.id && (
+              <KudoForm
+                user={user}
+                onClose={() => setSelectedUser(null)}
+              />
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

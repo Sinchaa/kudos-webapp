@@ -28,11 +28,7 @@ export const fetchUsers = async (userId) => {
 };
 
 export const fetchReceivedKudos = async (userId) => {
-  const response = await fetch(`${API_BASE_URL}/kudos/received-kudos`, {
-    headers: {
-      'user-id': userId
-    }
-  });
+  const response = await fetch(`${API_BASE_URL}/kudos/received-kudos?user_id=${userId}`);
   if (!response.ok) {
     throw new Error('Failed to fetch received kudos');
   }
@@ -40,11 +36,7 @@ export const fetchReceivedKudos = async (userId) => {
 };
 
 export const fetchAvailableKudos = async (userId) => {
-  const response = await fetch(`${API_BASE_URL}/kudos/available-kudos`, {
-    headers: {
-      'user-id': userId
-    }
-  });
+  const response = await fetch(`${API_BASE_URL}/kudos/available-kudos?user_id=${userId}`);
   if (!response.ok) {
     throw new Error('Failed to fetch available kudos');
   }
@@ -52,11 +44,7 @@ export const fetchAvailableKudos = async (userId) => {
 };
 
 export const fetchGivenKudos = async (userId) => {
-  const response = await fetch(`${API_BASE_URL}/kudos/given-kudos`, {
-    headers: {
-      'user-id': userId
-    }
-  });
+  const response = await fetch(`${API_BASE_URL}/kudos/given-kudos?user_id=${userId}`);
   if (!response.ok) {
     throw new Error('Failed to fetch given kudos');
   }
@@ -64,11 +52,10 @@ export const fetchGivenKudos = async (userId) => {
 };
 
 export const giveKudo = async (fromUserId, toUserId, message) => {
-  const response = await fetch(`${API_BASE_URL}/kudos/give-kudos/`, {
+  const response = await fetch(`${API_BASE_URL}/kudos/give-kudos?user_id=${fromUserId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'user-id': fromUserId
     },
     body: JSON.stringify({
       kudos_to_id: toUserId,
