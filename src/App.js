@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 const API_BASE_URL = 'http://localhost:8000';
@@ -19,7 +19,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [availableKudos, setAvailableKudos] = useState(null);
 
-    const getInitials = (firstName, lastName, username) => {
+  const getInitials = (firstName, lastName, username) => {
     if (firstName && lastName) {
       return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
     }
@@ -69,17 +69,6 @@ function App() {
     }
   };
 
-  // Refresh current user data (to update kudos_remaining)
-  const refreshCurrentUser = async (userId) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/me/?user_id=${userId}`);
-      const data = await response.json();
-      setCurrentUser(data);
-    } catch (error) {
-      console.error('Error refreshing user:', error);
-    }
-  };
-
   // Login handler
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -101,7 +90,6 @@ function App() {
       if (response.ok) {
         setCurrentUser(data);
         fetchAvailableKudos(data.id);
-        // fetchUsers(data.user_id);
         setSelectedUserId(data.id);
         fetchReceivedKudos(data.id);
       } else {
@@ -160,13 +148,15 @@ function App() {
         setGiveKudoSuccess('Kudo sent successfully!');
         setSelectedUserId('');
         setKudoMessage('');
-        // Refresh user data to update kudos_remaining
-        refreshCurrentUser(currentUser.id);
         // Optionally refresh received kudos if giving to yourself somehow
         fetchReceivedKudos(currentUser.id);
         fetchAvailableKudos(currentUser.id);
-        // Clear success message after 3 seconds
-        setTimeout(() => setGiveKudoSuccess(''), 3000);
+        handleTabChange('given')
+        // Clear success message after 2 seconds
+        setTimeout(() => {
+          setGiveKudoSuccess('');
+        }, 2000);
+        
       } else {
         setGiveKudoError(data.error || 'Failed to give kudo');
       }
@@ -195,9 +185,9 @@ function App() {
     setActiveTab(tab);
     
     // Fetch data based on which tab is selected
-    if (tab === 'give' && users.length === 0) {
+    if (tab === 'give') { // && users.length === 0
       fetchUsers(currentUser.id);
-    } else if (tab === 'given' && givenKudos.length === 0) {
+    } else if (tab === 'given') { //&& givenKudos.length === 0
       fetchGivenKudos(currentUser.id);
     }
     // 'received' tab data is already loaded on login
@@ -358,9 +348,7 @@ return (
               {/* Give Kudos Tab */}
               {activeTab === 'give' && (
                 <div className="users-list">
-                  {giveKudoSuccess && (
-                    <div className="success-message-floating">{giveKudoSuccess}</div>
-                  )}
+
 
                   {/* Show a clear message inside the Give tab when user has no kudos left */}
                   {availableKudos === 0 && (
@@ -459,6 +447,9 @@ return (
               {/* Kudos Given Tab */}
               {activeTab === 'given' && (
                 <div className="kudos-list">
+                  {giveKudoSuccess && (
+                    <div className="success-message-floating">{giveKudoSuccess}</div>
+                  )}
                   {givenKudos.length === 0 ? (
                     <div className="empty-state">
                       <p>You haven't given any kudos yet.</p>
