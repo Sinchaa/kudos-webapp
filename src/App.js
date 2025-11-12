@@ -77,7 +77,6 @@ function App() {
       setSelectedUserId(currentUser.id);
       fetchReceivedKudos(currentUser.id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
     const handleOpenGiveKudos = (userId) => {
@@ -119,14 +118,12 @@ function App() {
       }),
     });
 
-
       const data = await response.json();
 
       if (response.ok) {
         setGiveKudoSuccess('Kudo sent successfully!');
         setSelectedUserId(null);
         setKudoMessage('');
-        // Optionally refresh received kudos if giving to yourself somehow
         fetchReceivedKudos(currentUser.id);
         fetchAvailableKudos(currentUser.id);
         handleTabChange('given')
@@ -145,7 +142,6 @@ function App() {
     }
   };
 
-  // Logout handler
   const handleLogout = () => {
     setCurrentUser(null);
     setUsers([]);
@@ -162,12 +158,11 @@ function App() {
     setActiveTab(tab);
     
     // Fetch data based on which tab is selected
-    if (tab === 'give') { // && users.length === 0
+    if (tab === 'give') { 
       fetchUsers(currentUser.id);
-    } else if (tab === 'given') { //&& givenKudos.length === 0
+    } else if (tab === 'given') {
       fetchGivenKudos(currentUser.id);
     }
-    // 'received' tab data is already loaded on login
   };
 
   // Format date
@@ -181,9 +176,6 @@ function App() {
     });
   };
 
-  
-
-  // Routes declaration
   return (
     <Routes>
       <Route path="/login" element={<Login onLogin={(user) => setCurrentUser(user)} />} />

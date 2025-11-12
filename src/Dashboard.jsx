@@ -1,4 +1,3 @@
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 export default function Dashboard(props) {
@@ -73,7 +72,6 @@ export default function Dashboard(props) {
                 My Kudos
                 <span className="tab-badge">{receivedKudos.length}</span>
               </button>
-              {/* Always show Give Kudos tab. If user has no kudos left, mark visually and show message inside tab content */}
               <button
                 className={`tab ${activeTab === 'give' ? 'active' : ''} ${availableKudos === 0 ? 'tab-disabled' : ''}`}
                 onClick={() => handleTabChange('give')}
